@@ -31,14 +31,21 @@ export default function App() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      const now = Date.now();
       setTasks(currentTasks =>
         currentTasks.map(task => {
           if (!task.isCompleted && (task.isMainRunning || task.isExtraRunning)) {
-            return {
-              ...task,
-              mainTime: task.isMainRunning ? task.mainTime + 1 : task.mainTime,
-              extraTime: task.isExtraRunning ? task.extraTime + 1 : task.extraTime
-            };
+            const lastUpdated = task.lastUpdated || now;
+            const deltaSeconds = Math.floor((now - lastUpdated) / 1000);
+            
+            if (deltaSeconds > 0) {
+              return {
+                ...task,
+                mainTime: task.isMainRunning ? task.mainTime + deltaSeconds : task.mainTime,
+                extraTime: task.isExtraRunning ? task.extraTime + deltaSeconds : task.extraTime,
+                lastUpdated: lastUpdated + (deltaSeconds * 1000)
+              };
+            }
           }
           return task;
         })
@@ -60,6 +67,7 @@ export default function App() {
       isMainRunning: false,
       isExtraRunning: false,
       isCompleted: false,
+      lastUpdated: Date.now(),
       alerts: {
         time: { active: alertTimeActive, threshold: alertTimeThreshold },
         wage: { active: alertWageActive, threshold: alertWageThreshold }
@@ -79,19 +87,22 @@ export default function App() {
     setTasks(currentTasks =>
       currentTasks.map(task => {
         if (task.id === taskId) {
+          const now = Date.now();
           if (timerType === 'main') {
             const willRun = !task.isMainRunning;
             return {
               ...task,
               isMainRunning: willRun,
-              isExtraRunning: willRun ? false : task.isExtraRunning
+              isExtraRunning: willRun ? false : task.isExtraRunning,
+              lastUpdated: willRun ? now : task.lastUpdated
             };
           } else {
             const willRun = !task.isExtraRunning;
             return {
               ...task,
               isExtraRunning: willRun,
-              isMainRunning: willRun ? false : task.isMainRunning
+              isMainRunning: willRun ? false : task.isMainRunning,
+              lastUpdated: willRun ? now : task.lastUpdated
             };
           }
         }
