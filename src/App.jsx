@@ -218,7 +218,7 @@ export default function App() {
                       value={alertTimeThreshold}
                       onChange={e => setAlertTimeThreshold(Number(e.target.value))}
                       disabled={!alertTimeActive}
-                      className="w-20 px-2 py-1 border border-gray-300 rounded text-center disabled:opacity-50 disabled:bg-gray-100 outline-none focus:border-indigo-500"
+                      className="w-20 px-2 py-1 bg-white text-gray-900 border border-gray-300 rounded text-center disabled:opacity-50 disabled:bg-gray-100 disabled:text-gray-500 outline-none focus:border-indigo-500"
                     />
                     <span>分を超えたら警告</span>
                   </div>
@@ -239,7 +239,7 @@ export default function App() {
                       value={alertWageThreshold}
                       onChange={e => setAlertWageThreshold(Number(e.target.value))}
                       disabled={!alertWageActive}
-                      className="w-24 px-2 py-1 border border-gray-300 rounded text-center disabled:opacity-50 disabled:bg-gray-100 outline-none focus:border-indigo-500"
+                      className="w-24 px-2 py-1 bg-white text-gray-900 border border-gray-300 rounded text-center disabled:opacity-50 disabled:bg-gray-100 disabled:text-gray-500 outline-none focus:border-indigo-500"
                     />
                     <span>円を下回ったら警告</span>
                   </div>
